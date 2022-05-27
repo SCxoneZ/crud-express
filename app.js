@@ -10,14 +10,16 @@ const conn = mysql.createConnection({
 });
 const PORT = 3000;
 
-app.use("view engine", "ejs");
+app.set("view engine", "ejs");
 
 conn.connect((err) => {
   
   if (err) throw err;
   
   app.get("/", (req, res) => {
-    res.send("Hello World!");
+    conn.query("SELECT * FROM list", (err, results) => {
+      res.render("home", {title: "CRUD USING EXPRESS JS AND MYSQL", data: results});
+    })
   });
   
   app.listen(PORT, () => console.log(`Listening To Port ${PORT}...`));
